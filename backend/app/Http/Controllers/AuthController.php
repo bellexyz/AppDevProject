@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -20,10 +21,16 @@ class AuthController extends Controller
                 'email' => 'required|email|unique:users',
                 'password' => 'required|string|min:6',
                 'password_confirmation' => 'required|string|min:6|same:password',
+                'profile_picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Define validation rules for profile picture upload
             ]);
 
             if ($validator->fails()) {
                 return response()->json(['errors' => $validator->errors()], 422);
+            }
+
+            // Handle file upload
+            if ($request->hasFile('profile_picture')) {
+                $path = $request->file('profile_picture')->store('profile_pictures');
             }
 
             $user = new User();
@@ -32,6 +39,9 @@ class AuthController extends Controller
             $user->username = $request->input('username');
             $user->email = $request->input('email');
             $user->password = Hash::make($request->input('password'));
+            if (isset($path)) {
+                $user->profile_picture = $path; // Save the file path to the user's profile_picture column
+            }
             $user->save();
 
             return response()->json(['message' => 'User registered successfully'], 201);
@@ -45,33 +55,17 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         try {
-            // Validate incoming request data
-            $validator = Validator::make($request->all(), [
-                'email' => 'required|email',
-                'password' => 'required|string',
-            ]);
+            $credentials = $request->only('email', 'password');
 
-            // Check for validation errors
-            if ($validator->fails()) {
-                return response()->json(['errors' => $validator->errors()], 422);
-            }
-
-            // Attempt to log the user in
-            if (Auth::attempt($request->only('email', 'password'))) {
-                // Authentication successful
+            if (Auth::attempt($credentials)) {
                 $user = Auth::user();
-                // Generate and return a token 
                 $token = $user->createToken('AuthToken')->plainTextToken;
                 return response()->json(['token' => $token], 200);
             } else {
-                // Authentication failed
                 return response()->json(['message' => 'Invalid credentials'], 401);
             }
         } catch (\Exception $e) {
-            // Log the exception for debugging purposes
             \Log::error('Login failed: ' . $e->getMessage());
-
-            // Return error response
             return response()->json(['message' => 'Login failed. Please try again.'], 500);
         }
     }

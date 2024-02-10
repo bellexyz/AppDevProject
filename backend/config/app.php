@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Sanctum\SanctumServiceProvider;
+
 
 return [
 
@@ -155,8 +157,9 @@ return [
     |
     */
 
-    'providers' => ServiceProvider::defaultProviders()->merge([
-        /*
+    'providers' => array_merge(
+        ServiceProvider::defaultProviders()->toArray(),
+        [        /*
          * Package Service Providers...
          */
 
@@ -168,7 +171,11 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-    ])->toArray(),
+
+        // Add SanctumServiceProvider here
+        SanctumServiceProvider::class,
+    ]
+),
 
     /*
     |--------------------------------------------------------------------------
@@ -185,4 +192,5 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    
 ];
