@@ -39,6 +39,22 @@ const SignUp = () => {
       setMessage('Please complete the CAPTCHA.');
       return;
     }
+  
+    // Check if any required field is empty
+    const requiredFields = ['first_name', 'last_name', 'username', 'email', 'password', 'password_confirmation', 'profile_picture'];
+    const emptyFields = requiredFields.filter(field => !formData[field]);
+  
+    if (emptyFields.length > 0) {
+      setMessage(`Please enter ${emptyFields.join(', ')}.`);
+      return;
+    }
+  
+    // Validate password format
+    if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(formData.password)) {
+      setMessage('Password must contain at least one lowercase letter, one uppercase letter, one number, and be at least 6 characters long.');
+      return;
+    }
+  
     setIsLoading(true);
     try {
       const data = new FormData();
@@ -68,7 +84,8 @@ const SignUp = () => {
       });
     }
   };
-
+  
+  
   const handleCaptchaChange = token => {
     setCaptchaToken(token);
   };
@@ -97,7 +114,7 @@ const SignUp = () => {
         </div>
 
         <ReCAPTCHA
-          sitekey="6Lfo1G0pAAAAACwIjd_D3abRhIaO-16cpGb80eRt"
+          sitekey="6Lf4nm8pAAAAAEtDxAf_MJaiDIzMai5rWqcJj8Br"
           onChange={handleCaptchaChange}
         />
         <button type="submit" disabled={isLoading}>Sign Up</button>
@@ -107,4 +124,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignUp; 
