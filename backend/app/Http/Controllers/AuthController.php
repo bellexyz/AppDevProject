@@ -19,7 +19,12 @@ class AuthController extends Controller
                 'last_name' => 'required|string',
                 'username' => 'required|string|unique:users',
                 'email' => 'required|email|unique:users',
-                'password' => 'required|string|min:6',
+                'password' => [
+                    'required',
+                    'string',
+                    'min:6',
+                    'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+                ],
                 'password_confirmation' => 'required|string|min:6|same:password',
                 'profile_picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Define validation rules for profile picture upload
             ]);
@@ -32,17 +37,31 @@ class AuthController extends Controller
             if ($request->hasFile('profile_picture')) {
                 $path = $request->file('profile_picture')->store('profile_pictures');
             }
+            
+            // Handle file upload and generate a unique hash for each profile picture
+            if ($request->hasFile('profile_picture')) {
+                $profilePicture = $request->file('profile_picture');
 
-            $user = new User();
-            $user->first_name = $request->input('first_name');
-            $user->last_name = $request->input('last_name');
-            $user->username = $request->input('username');
-            $user->email = $request->input('email');
-            $user->password = Hash::make($request->input('password'));
-            if (isset($path)) {
-                $user->profile_picture = $path; // Save the file path to the user's profile_picture column
+                // Generate a unique hash for the profile picture using current timestamp
+                $hashedProfilePicture = hash_file('sha256', $profilePicture->path()) . time();
+
+                // Store the profile picture and update the user's record with the unique hash
+                $path = $profilePicture->store('profile_pictures');
             }
-            $user->save();
+            $userData = [
+                'first_name' => $request->input('first_name'),
+                'last_name' => $request->input('last_name'),
+                'username' => $request->input('username'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password'))
+            ];
+            
+            if (isset($path)) {
+                $userData['profile_picture'] = $hashedProfilePicture; 
+            }
+            
+            User::create($userData);
+            
 
             return response()->json(['message' => 'User registered successfully'], 201);
         } catch (\Exception $e) {
@@ -55,7 +74,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         try {
-            $credentials = $request->only('email', 'password');
+            $credentials = $request->only('username', 'password');
 
             if (Auth::attempt($credentials)) {
                 $user = Auth::user();
