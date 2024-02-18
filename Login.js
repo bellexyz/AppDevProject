@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: '',
+    username: '',
     password: ''
   });
 
@@ -22,7 +22,7 @@ const Login = () => {
       console.log('Login response:', response.data); 
       const { token } = response.data;
       localStorage.setItem('token', token);
-      navigate('/user-type-selection');
+      navigate('/try');
     } catch (error) {
       console.error('Login failed:', error);
       if (error.response) {
@@ -42,13 +42,13 @@ const Login = () => {
   };
   
   const handleSignUpClick = () => {
-    navigate('/user-type-selection');
+    navigate('/try');
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <input type="email" name="email" placeholder="Email" onChange={handleChange} />
+        <input type="username" name="username" placeholder="Username" onChange={handleChange} />
         <input type="password" name="password" placeholder="Password" onChange={handleChange} />
         <button type="submit">Login</button>
       </form>
