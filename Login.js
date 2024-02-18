@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+// Import your images
+import meloMixLogo from './meloMixLogo.png';
+import loginImage from './loginImage.png';
+
 const Login = () => {
   const [formData, setFormData] = useState({
     username: '',
@@ -47,12 +51,32 @@ const Login = () => {
 
   return (
     <div>
+<<<<<<< HEAD
       <form onSubmit={handleSubmit}>
-        <input type="username" name="username" placeholder="Username" onChange={handleChange} />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} />
-        <button type="submit">Login</button>
-      </form>
+      
       <button onClick={handleSignUpClick}>Sign Up</button>
+=======
+      <div>
+        <img src={meloMixLogo} alt="MeloMix Logo" />
+        <p>MeloMix</p>
+        <h1>LOG IN</h1>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Email:</label>
+            <input type="email" name="email" onChange={handleChange} />
+          </div>
+          <div>
+            <label>Password:</label>
+            <input type="password" name="password" onChange={handleChange} />
+          </div>
+          <button type="submit">Login</button>
+        </form>
+        <button onClick={handleSignUpClick}>Sign Up</button>
+      </div>
+      <div>
+        <img src={loginImage} alt="Login Image" />
+      </div>
+>>>>>>> f67adddb35ec29c8d406bce53da8aa207a212d51
     </div>
   );
 };
