@@ -1,0 +1,4 @@
+[2024-02-22 09:45:24] local.ERROR: Cannot use try without catch or finally {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use try without catch or finally at /var/www/app/Http/Controllers/AuthController.php:19)
+[stacktrace]
+#0 {main}
+"} 

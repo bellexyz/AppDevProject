@@ -4,6 +4,9 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -26,5 +29,22 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof NotFoundHttpException) {
+            return response()->json(['message' => 'Resource not found'], 404);
+        }
+
+        if ($exception instanceof AuthenticationException) {
+            return response()->json(['message' => 'Unauthenticated'], 401);
+        }
+
+        if ($exception instanceof ValidationException) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $exception->validator->errors()], 422);
+        }
+
+        // Return JSON response for all other exceptions
+        return response()->json(['message' => 'An error occurred. Please try again later.'], 500);
     }
 }
