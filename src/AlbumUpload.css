@@ -1,0 +1,67 @@
+.font {
+    font-family: 'Poppins', sans-serif;
+}.dashed-outline {
+    border: 2px dashed #cccccc;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+    border-radius: 10px;
+
+  }
+  
+  .dashed-outline:hover {
+    border-color: #aaaaaa;
+  }
+
+  /* Add this CSS to your AlbumUpload.css file */
+
+.music-file-preview {
+    margin-right: 0px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    min-width: 100%
+    
+  }
+  
+  .music-file-details {
+    flex: 1;
+    margin-left: 15px;
+  }
+  
+  .music-file-info {
+    margin-bottom: 10px;
+  }
+  
+  .music-file-name {
+    font-weight: bold;
+  }
+  
+  .music-file-size {
+    color: #777;
+  }
+  
+  .music-file-buttons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .preview-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  .preview-button:hover {
+    background-color: #c82333;
+  }
+  
+  

@@ -74,51 +74,55 @@ const UserTypeSelection = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    
+  
     if (!captchaToken) {
       showToastMessage3(true);
       return;
     }
+  
     const requiredFields = ['first_name', 'last_name', 'username', 'email', 'password', 'password_confirmation', 'profile_picture'];
     const emptyFields = requiredFields.filter(field => !formData[field]);
-    
+  
     // Check if any required field is empty
-      if (emptyFields.length > 0) {
-        toast.error('Please enter field');
-        
-      }
-      // Validate password format
-      if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(formData.password)) {
-        toast.error("Password must contain at least one lowercase letter, one uppercase letter, one number, and be at least 6 characters long.");
-        
-      }
-      setIsLoading(true);
-      try {
-        const data = new FormData();
-        // Iterate over formData and append form fields to FormData object
-        for (let key in formData) {
-            // Handle bio data file upload separately
-            if (key === 'bio_data_path') {
-                if (bioDataFile) {
-                    data.append(key, bioDataFile);
-                }
-            } else {
-                data.append(key, formData[key]);
-            }
+    if (emptyFields.length > 0) {
+      toast.error('Please enter all required fields');
+      return;
+    }
+  
+    // Validate password format
+    if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(formData.password)) {
+      toast.error("Password must contain at least one lowercase letter, one uppercase letter, one number, and be at least 6 characters long.");
+      return;
+    }
+  
+    setIsLoading(true);
+  
+    try {
+      const data = new FormData();
+      // Iterate over formData and append form fields to FormData object
+      for (let key in formData) {
+        // Handle bio data file upload separately
+        if (key === 'bio_data_path') {
+          if (bioDataFile) {
+            data.append(key, bioDataFile);
+          }
+        } else {
+          data.append(key, formData[key]);
         }
-        
+      }
+  
       data.append('user_type', userType);
       const endpointURL = userType === 'artist' ? 'artist' : 'listener';
-    
+  
       const response = await axios.post(`http://localhost:8000/api/register/${endpointURL}`, data, {
         withCredentials: true,
       });
-
+  
       // Check if registration was successful
       if (response.status === 200) {
         setNotification({ message: 'An email has been sent for verification. Please check your inbox.', type: 'success' });
       }
-
+  
       showToastMessage4(true);
       navigate('/Login');
     } catch (error) {
@@ -140,11 +144,12 @@ const UserTypeSelection = () => {
         password_confirmation: '',
         profile_picture: null,
         bio_data_path: '',// Reset bio_data field after submission
-
+  
       });
       handleCloseModal(); // Close modal after submission
     }
   };
+  
 
   const handleCaptchaChange = token => {
     setCaptchaToken(token);

@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { ListGroup, Alert, Spinner, Button, Container, Image, Row, Col } from 'react-bootstrap';
 import MeloMixLogo from './images/meloMixLogo.png';
 import './ListenerDashboard.css';
 import MainSidebar from './MainSidebar';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
+import AlbumPage from './AlbumPage';
+import GenrePage from './GenrePage';
 
 const ListenerDashboard = () => {
+  const navigate = useNavigate(); // Initialize useNavigate
   const [musicFiles, setMusicFiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -15,6 +19,13 @@ const ListenerDashboard = () => {
   const [showRecommendedSongs, setShowRecommendedSongs] = useState(true);
   const [originalMusicFiles, setOriginalMusicFiles] = useState([]);
   const [selectedMusic, setSelectedMusic] = useState(null);
+
+  // Define the function to extract filename from path
+  const getFileNameFromPath = (filePath) => {
+    const parts = filePath.split('/');
+    const fileName = parts[parts.length - 1];
+    return fileName;
+  };
 
   useEffect(() => {
     const storedFavoriteSongs = JSON.parse(localStorage.getItem('favoriteSongs') || '[]');
@@ -77,6 +88,13 @@ const ListenerDashboard = () => {
     setShowRecommendedSongs(true);
     setMusicFiles(originalMusicFiles);
   };
+  const handleAlbumButtonClick = () => {
+    navigate('/albums'); // Use navigate instead of history.push
+  };
+
+  const handleGenreButtonClick = () => {
+    navigate('/genres'); // Use navigate instead of history.push
+  };
 
   return (
     <div className="font" style={{ backgroundColor: '#403F3F', minHeight: '100vh', position: 'relative' }}>
@@ -89,9 +107,17 @@ const ListenerDashboard = () => {
         <Col sm={8} className="mb-2 mt-4 ml-4">
           <div className="d-flex flex-row justify-content-between mb-2" style={{ minWidth: '109%' }}> 
             <h3 style={{color: 'white' }}>{showRecommendedSongs ? 'Recommended Songs' : 'Favorite Songs'}</h3>
-            <Button variant="primary" size='sm' onClick={showRecommendedSongs ? handleViewFavorites : handleViewRecommendedSongs}>
+            <div >
+            <Button style={{marginRight: '5px'}} variant="primary" size='sm' onClick={showRecommendedSongs ? handleViewFavorites : handleViewRecommendedSongs}>
               {showRecommendedSongs ? 'View Favorite Music' : 'View Recommended Songs'}
             </Button>
+            <Button style={{marginRight: '5px'}} variant="primary" size='sm' onClick={handleAlbumButtonClick}>View Albums</Button>
+            <Button variant="primary" size='sm' onClick={handleGenreButtonClick}>View Songs</Button>
+            </div>
+          </div>
+          {/* Add the buttons here */}
+          <div className="mb-2">
+           
           </div>
           {loading ? (
             <div className="text-center">
@@ -108,7 +134,7 @@ const ListenerDashboard = () => {
                 <div style={{ maxWidth: '200px', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <img src={music.coverUrl} alt="Music cover" style={{ width: '80px', height: '80px' }} />
                 <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px' }}>
-                  <div>{music.title}</div>
+                <div>{getFileNameFromPath(music.file_path)}</div>
                   <div>{music.artist}</div>
                 </div>
               </div>
@@ -127,7 +153,7 @@ const ListenerDashboard = () => {
           {selectedMusic && (
             <div>
               <Image src={selectedMusic.coverUrl} alt="Song Cover" style={{ width: '220px', height: '220px', marginTop: '18px', borderRadius:'2px' }} />
-              <div className="text-white mt-4">{selectedMusic.title}</div>
+              <div className="text-white mt-4">{getFileNameFromPath(selectedMusic.file_path)}</div>
               <div className="text-white mt-4">{selectedMusic.artist}</div>
               <div className="text-white mt-4" style={{ backgroundColor: 'red' }}>{selectedMusic.description}</div>
             </div>

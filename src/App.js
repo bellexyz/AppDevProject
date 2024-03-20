@@ -14,7 +14,10 @@ import ListenerDashboard from './ListenerDashboard';
 import ArtistDashboard from './ArtistDashboard';
 import MusicPlayer from './MusicPlayer';
 import ArtistDashboard1 from './ArtistDashboard1';
-import ArtistProfile from './ArtistProfile';
+import ArtistProfile from './ArtistProfile'; 
+import UploadArtistAlbum from './UploadArtistAlbum';
+import AlbumPage from './AlbumPage';
+import GenrePage from './GenrePage';
 
 
 
@@ -32,10 +35,14 @@ const App = () => {
         <Route path="/AdminUser" element={<AdminUser />} />
         <Route path="/AdminSubscription" element={<AdminSubscription />} /> 
         <Route path="/ListenerDashboard" element={<ListenerDashboard />} /> 
-        <Route path="/ArtistDashboard" element={<ArtistDashboard />} /> 
+        <Route path="/ArtistAlbumUpload" element={<ArtistDashboard />} /> 
         <Route path="/MusicPlayer" element={<MusicPlayer />} /> 
         <Route path="/ArtistDashboard1" element={<ArtistDashboard1 />} /> 
         <Route path="/ArtistProfile" element={<ArtistProfile />} /> 
+        <Route path="/UploadArtistAlbum" element={<UploadArtistAlbum />} /> 
+        <Route path="/albums" element={<AlbumPage />} /> 
+        <Route path="/genres" element={<GenrePage />} /> 
+
       </Routes>
     </Router>
   );

@@ -1,25 +1,35 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Image } from 'react-bootstrap';
+import { Container, Row, Col, Image, Button } from 'react-bootstrap';
 import MeloMixLogo from './images/meloMixLogo.png';
 import ArtistImage from './images/Artist.jpg';
 import UploadSongModal from './UploadSongModal';
 import { FaPlay, FaStepForward, FaStepBackward, FaRandom, FaVolumeDown, FaExpand, FaSearchPlus } from 'react-icons/fa';
 import MainSidebar from './MainSidebar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
+
 
 
 const ArtistProfile = () => {
     const [showModal, setShowModal] = useState(false);
     const [uploadedSongTitle, setUploadedSongTitle] = useState('');
 
-    const handleUpload = (title) => {
+    const handleUpload = (title) => {   
         setUploadedSongTitle(title);
     };
 
     return (
         <div className="font" style={{ backgroundColor: '#403F3F', minHeight: '100vh', position: 'relative' }}>
-            <Container className="d-flex flex-row align-items-center justify-content-start p-1 m-0" style={{ textDecoration: 'none', color: 'inherit', backgroundColor: '#C70303', minWidth: '100%' }}>
-                <Image src={MeloMixLogo} alt="MeloMix Logo" style={{ height: '30px', marginRight: '10px', marginLeft: '10px' }} />
-                <h1 style={{ color: 'white', fontSize: '18px', fontWeight: '600', margin: 0 }}>MeloMix</h1>
+            <Container className="d-flex flex-row align-items-center justify-content-between p-1 m-0" style={{ textDecoration: 'none', color: 'inherit', backgroundColor: '#C70303', minWidth: '100%' }}>
+                <div className="d-flex flex-row align-items-center">
+                    <Image src={MeloMixLogo} alt="MeloMix Logo" style={{ height: '30px', marginRight: '10px', marginLeft: '10px' }} />
+                    <h1 style={{ color: 'white', fontSize: '18px', fontWeight: '600', margin: 0 }}>MeloMix</h1>
+                </div>
+                <div> 
+                <Button style={{ backgroundColor: 'transparent', border: 'none' }}>
+                    <FontAwesomeIcon className='mr-5' icon={faUpload} style={{ transition: 'color 0.7s' }} />
+                </Button>
+                </div>
             </Container>
             <Row>
                 <MainSidebar />
