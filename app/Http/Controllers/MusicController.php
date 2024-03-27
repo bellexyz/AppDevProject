@@ -65,7 +65,7 @@ class MusicController extends Controller
     public function index()
     {
         try {
-            $musicFiles = Music::all(['id', 'artist', 'file_path', 'cover_path', 'description']);
+            $musicFiles = Music::all(['id', 'artist', 'file_path', 'cover_path', 'description', 'song_name']);
             $musicFiles = $musicFiles->map(function ($music) {
                 $music->fullUrl = asset($music->file_path);
                 $music->coverUrl = asset($music->cover_path);
@@ -82,7 +82,7 @@ class MusicController extends Controller
     {
         try {
             $favoriteSongs = $request->input('favoriteSongs');
-            $favoriteMusic = Music::whereIn('id', $favoriteSongs)->get(['id', 'title', 'artist', 'file_path', 'cover_path', 'description']);
+            $favoriteMusic = Music::whereIn('id', $favoriteSongs)->get(['id', 'title', 'artist', 'file_path', 'cover_path', 'description', 'song_name']);
             
             return response()->json($favoriteMusic);
         } catch (\Exception $e) {
