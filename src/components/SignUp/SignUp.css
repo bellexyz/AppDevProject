@@ -1,0 +1,36 @@
+  .font {
+    font-family: 'Poppins', sans-serif;
+  }
+  .file-input-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    border: 2px solid #ccc; 
+  }
+  
+  .upload-button {
+    cursor: pointer;
+  }
+  
+  .profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  #profile_picture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  

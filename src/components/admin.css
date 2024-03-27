@@ -1,0 +1,15 @@
+.font {
+    font-family: 'Poppins', sans-serif;
+}
+.custom-table thead{
+    margin-left: 10px !important;
+}
+.custom-table table tbody{
+    margin-left: 20px !important;
+}
+
+.custom-table table th{
+    background-color: #0B0202 !important;
+    color: #FFFFFF !important;
+    border: none !important;
+  }
